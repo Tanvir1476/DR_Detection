@@ -16,9 +16,17 @@ app.config["UPLOAD_FOLDER"] = UPLOAD_FOLDER
 
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 
-model = tf.keras.models.load_model(
-    "model/EfficientNetB0_Best.keras"
-)
+model = None
+
+def get_model():
+    global model
+
+    if model is None:
+        model = tf.keras.models.load_model(
+            "model/EfficientNetB0_Best.keras"
+        )
+
+    return model
 
 classes = {
 
@@ -106,8 +114,8 @@ def predict():
 
     image, processed = prepare_image(filepath)
 
-    prediction = model.predict(image)
-
+    prediction = get_model().predict(image)
+    
     pred_class = np.argmax(prediction)
 
     confidence = float(np.max(prediction) * 100)
