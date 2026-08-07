@@ -1,112 +1,147 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-
     <meta charset="UTF-8">
-
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <title>Diabetic Retinopathy Detection</title>
+    <title>RetinaScan — Diabetic Retinopathy Detection</title>
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@500&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-
 </head>
-
 <body>
 
 <div class="container">
 
-    <div class="card shadow-lg p-4 mt-5">
+    <div class="scope-nav">
+        <div class="scope-mark"></div>
+        <div class="scope-wordmark">Retina<span>Scan</span></div>
+    </div>
 
-        <h2 class="text-center text-primary">
-
-            Diabetic Retinopathy Detection System
-
-        </h2>
-
-        <p class="text-center">
-
-            Upload a retinal fundus image to detect the stage of diabetic retinopathy.
-
+    <div class="hero">
+        <div class="hero-eyebrow">Diabetic Retinopathy Screening</div>
+        <h1>Read a fundus image in seconds, not in a waiting room.</h1>
+        <p class="lead">
+            Upload a retinal fundus photograph and the model grades it across
+            the five clinical stages of diabetic retinopathy — from No DR to
+            Proliferative DR — with a confidence score for each read.
         </p>
+    </div>
 
+    <div class="card p-4 p-md-5 mt-4">
         <form action="/predict" method="POST" enctype="multipart/form-data">
-
-            <div class="mb-3">
+            <div class="dropzone" id="dropzone">
+                <div class="scope-ring">
+                    <svg viewBox="0 0 24 24" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M12 16v-8M8 12h8"/>
+                        <circle cx="12" cy="12" r="9.5"/>
+                    </svg>
+                </div>
+                <div class="dropzone-title">Upload a fundus image</div>
+                <div class="dropzone-sub">JPG or PNG — a clear, centred retinal photograph works best</div>
 
                 <input
-
                     class="form-control"
-
                     type="file"
-
                     name="image"
-
                     accept="image/*"
-
                     id="imageInput"
-
                     required
-
                 >
 
+                <img id="preview" src="" class="img-fluid" style="max-height:280px; display:none;">
             </div>
 
-            <div class="text-center">
-
-                <img
-
-                    id="preview"
-
-                    src=""
-
-                    class="img-fluid rounded shadow"
-
-                    style="max-height:300px; display:none;"
-
-                >
-
+            <div class="d-grid mt-4">
+                <button class="btn btn-primary btn-lg" type="submit">Analyze Image</button>
             </div>
-
-            <br>
-
-            <div class="d-grid">
-
-                <button class="btn btn-primary btn-lg">
-
-                    Predict
-
-                </button>
-
-            </div>
-
         </form>
+    </div>
 
+    <div class="steps">
+        <div class="step">
+            <div class="step-num">01 — UPLOAD</div>
+            <h6>Add a fundus photo</h6>
+            <p>Any standard retinal camera image, uploaded directly from your device.</p>
+        </div>
+        <div class="step">
+            <div class="step-num">02 — PREPROCESS</div>
+            <h6>Retina is isolated</h6>
+            <p>The image is cropped to the retina and contrast-enhanced (CLAHE) before grading.</p>
+        </div>
+        <div class="step">
+            <div class="step-num">03 — GRADE</div>
+            <h6>Stage &amp; confidence</h6>
+            <p>An EfficientNetB0 model returns a DR stage with a confidence percentage.</p>
+        </div>
+    </div>
+
+    <div class="scope-divider"><span>Built by</span></div>
+
+    <div class="team">
+        <div class="team-card">
+            <div class="team-photo-wrap">
+                <img src="{{ url_for('static', filename='team/farhan.png') }}" alt="Farhan Tanvir">
+            </div>
+            <div class="team-name">Farhan Tanvir</div>
+            <div class="team-role">Software Engineering</div>
+        </div>
+        <div class="team-card">
+            <div class="team-photo-wrap">
+                <img src="{{ url_for('static', filename='team/sadia.png') }}" alt="Sadia Islam Nizum">
+            </div>
+            <div class="team-name">Sadia Islam Nizum</div>
+            <div class="team-role">Software Engineering</div>
+        </div>
+        <div class="team-card">
+            <div class="team-photo-wrap">
+                <img src="{{ url_for('static', filename='team/sajib.png') }}" alt="Sajib Sarker">
+            </div>
+            <div class="team-name">Sajib Sarker</div>
+            <div class="team-role">Software Engineering</div>
+        </div>
+    </div>
+
+    <div class="site-footer">
+        <strong>RetinaScan</strong> — Dept. of Software Engineering, Daffodil International University.
+        For research &amp; educational demonstration only — not a substitute for professional diagnosis.
     </div>
 
 </div>
 
 <script>
+const imageInput = document.getElementById("imageInput");
+const preview = document.getElementById("preview");
+const dropzone = document.getElementById("dropzone");
 
-document.getElementById("imageInput").onchange = function(event){
-
-    const file = event.target.files[0];
-
-    if(file){
-
-        document.getElementById("preview").src = URL.createObjectURL(file);
-
-        document.getElementById("preview").style.display = "block";
-
-    }
-
+function showPreview(file){
+    if(!file) return;
+    preview.src = URL.createObjectURL(file);
+    preview.style.display = "block";
 }
 
+imageInput.addEventListener("change", (e) => showPreview(e.target.files[0]));
+
+["dragenter","dragover"].forEach(evt =>
+    dropzone.addEventListener(evt, (e) => {
+        e.preventDefault();
+        dropzone.classList.add("is-dragover");
+    })
+);
+["dragleave","drop"].forEach(evt =>
+    dropzone.addEventListener(evt, (e) => {
+        e.preventDefault();
+        dropzone.classList.remove("is-dragover");
+    })
+);
+dropzone.addEventListener("drop", (e) => {
+    const file = e.dataTransfer.files[0];
+    if(file){
+        imageInput.files = e.dataTransfer.files;
+        showPreview(file);
+    }
+});
 </script>
 
 </body>
-
 </html>
