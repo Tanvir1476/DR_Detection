@@ -1,0 +1,214 @@
+{% extends "base.html" %}
+{% block title %}RetinaScan — Diabetic Retinopathy Detection{% endblock %}
+
+{% block content %}
+
+<div class="section">
+    <div class="hero">
+        <div>
+            <div class="eyebrow">Clinical-grade screening</div>
+            <h1>Grade diabetic retinopathy from a single fundus photo.</h1>
+            <p class="lead">Upload a retinal fundus photograph and get a clinical-stage read — from No DR to Proliferative DR — with a confidence score, in seconds.</p>
+            <div class="hero-actions">
+                <a class="btn-primary" href="{{ url_for('test') }}">Start a Test</a>
+                <a class="btn-ghost" href="{{ url_for('team') }}">Meet the Team</a>
+            </div>
+            <div class="trust-row">
+                <div class="avatars">
+                    <span><img src="{{ url_for('static', filename='team/farhan.png') }}" alt=""></span>
+                    <span><img src="{{ url_for('static', filename='team/sadia.png') }}" alt=""></span>
+                    <span><img src="{{ url_for('static', filename='team/sajib.png') }}" alt=""></span>
+                </div>
+                <small>Built by the Software Engineering team at Daffodil International University</small>
+            </div>
+        </div>
+
+        <div class="eye-wrap" id="eyeWrap">
+            <svg class="eye-illustration" viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
+                <defs>
+                    <radialGradient id="irisGrad" cx="50%" cy="45%" r="60%">
+                        <stop offset="0%" stop-color="#1E7C74"/>
+                        <stop offset="65%" stop-color="#155A54"/>
+                        <stop offset="100%" stop-color="#0B1E3D"/>
+                    </radialGradient>
+                    <clipPath id="eyeClip"><circle cx="200" cy="200" r="78"/></clipPath>
+                </defs>
+                <g class="eye-reticle" stroke="#C7D0DC" stroke-width="1" fill="none">
+                    <circle cx="200" cy="200" r="150" stroke-dasharray="2 10"/>
+                    <circle cx="200" cy="200" r="130"/>
+                    <line x1="200" y1="35" x2="200" y2="55"/>
+                    <line x1="200" y1="345" x2="200" y2="365"/>
+                    <line x1="35" y1="200" x2="55" y2="200"/>
+                    <line x1="345" y1="200" x2="365" y2="200"/>
+                </g>
+                <circle cx="200" cy="200" r="95" fill="#FFFFFF" stroke="#DDE2E8" stroke-width="2"/>
+                <g>
+                    <circle cx="200" cy="200" r="78" fill="url(#irisGrad)"/>
+                    <g clip-path="url(#eyeClip)" opacity=".45" stroke="#0B1E3D" stroke-width="1">
+                        <line x1="200" y1="122" x2="200" y2="160"/>
+                        <line x1="240" y1="135" x2="222" y2="168"/>
+                        <line x1="270" y1="165" x2="238" y2="182"/>
+                        <line x1="278" y1="200" x2="240" y2="200"/>
+                        <line x1="270" y1="235" x2="238" y2="218"/>
+                        <line x1="240" y1="265" x2="222" y2="232"/>
+                        <line x1="200" y1="278" x2="200" y2="240"/>
+                        <line x1="160" y1="265" x2="178" y2="232"/>
+                        <line x1="130" y1="235" x2="162" y2="218"/>
+                        <line x1="122" y1="200" x2="160" y2="200"/>
+                        <line x1="130" y1="165" x2="162" y2="182"/>
+                        <line x1="160" y1="135" x2="178" y2="168"/>
+                    </g>
+                    <circle cx="200" cy="200" r="30" fill="#0A1526"/>
+                    <circle cx="190" cy="188" r="8" fill="#ffffff" opacity=".55"/>
+                </g>
+                <circle class="eye-node" cx="235" cy="165" r="4" fill="#C9862B"/>
+                <circle class="eye-node" cx="168" cy="225" r="4" fill="#C9862B" style="animation-delay:.6s"/>
+                <circle class="eye-node" cx="225" cy="240" r="4" fill="#1E7C74" style="animation-delay:1.2s"/>
+                <g clip-path="url(#eyeClip)">
+                    <rect class="eye-scanline" x="122" y="197" width="156" height="3" fill="#1E7C74" opacity=".85"/>
+                </g>
+            </svg>
+            <div class="data-chip chip-1"><span class="l">Stage</span> · <span class="v">Moderate</span></div>
+            <div class="data-chip chip-2"><span class="l">Confidence</span> · <span class="v">92.4%</span></div>
+        </div>
+    </div>
+</div>
+
+<div class="strip">
+    <div class="strip-inner">
+        <div><b>5</b><span>DR stages classified</span></div>
+        <div><b>224×224</b><span>model input resolution</span></div>
+        <div><b>&lt;2s</b><span>average inference time</span></div>
+        <div><b>EfficientNetB0</b><span>underlying architecture</span></div>
+    </div>
+</div>
+
+<div class="section">
+    <div class="how reveal">
+        <div class="section-head">
+            <div class="eyebrow">The process</div>
+            <h2>From photo to diagnosis-ready read, in three steps.</h2>
+            <p>No manual grading, no waiting room — just a fundus photo and a clinically-mapped output you can act on.</p>
+        </div>
+        <div class="steps reveal-stagger">
+            <div class="step stagger-item">
+                <div class="step-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 16V4M7 9l5-5 5 5"/><path d="M5 20h14"/></svg></div>
+                <div class="step-num">STEP 01</div>
+                <h4>Upload a fundus photo</h4>
+                <p>Any standard retinal camera image, uploaded directly from your device — JPG or PNG.</p>
+            </div>
+            <div class="step stagger-item">
+                <div class="step-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3.5"/><path d="M12 3v2.5M12 18.5V21M3 12h2.5M18.5 12H21M5.6 5.6l1.8 1.8M16.6 16.6l1.8 1.8M5.6 18.4l1.8-1.8M16.6 7.4l1.8-1.8"/></svg></div>
+                <div class="step-num">STEP 02</div>
+                <h4>Retina is isolated</h4>
+                <p>The image is cropped to the retina and contrast-enhanced with CLAHE before grading.</p>
+            </div>
+            <div class="step stagger-item">
+                <div class="step-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3 8-8"/><path d="M20 12v6a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h9"/></svg></div>
+                <div class="step-num">STEP 03</div>
+                <h4>Stage &amp; confidence</h4>
+                <p>An EfficientNetB0 model returns a DR stage with a confidence percentage and next steps.</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="section">
+    <div class="stages">
+        <div class="stages-card reveal">
+            <div>
+                <h2>Mapped to all five clinical DR stages.</h2>
+                <p>Each read lands on one of the five recognised stages of diabetic retinopathy, so the result speaks the same language as your ophthalmologist.</p>
+            </div>
+            <div class="stage-list">
+                <div class="stage-item"><span class="name"><span class="dot" style="background:#3DDC97"></span>No DR</span><div class="bar-track"><div class="bar-fill" style="--fill:20%;background:#3DDC97"></div></div>20%</div>
+                <div class="stage-item"><span class="name"><span class="dot" style="background:#9FE0D6"></span>Mild</span><div class="bar-track"><div class="bar-fill" style="--fill:40%;background:#9FE0D6"></div></div>40%</div>
+                <div class="stage-item"><span class="name"><span class="dot" style="background:#C9862B"></span>Moderate</span><div class="bar-track"><div class="bar-fill" style="--fill:60%;background:#C9862B"></div></div>60%</div>
+                <div class="stage-item"><span class="name"><span class="dot" style="background:#E8654A"></span>Severe</span><div class="bar-track"><div class="bar-fill" style="--fill:80%;background:#E8654A"></div></div>80%</div>
+                <div class="stage-item"><span class="name"><span class="dot" style="background:#D63B3B"></span>Proliferative DR</span><div class="bar-track"><div class="bar-fill" style="--fill:100%;background:#D63B3B"></div></div>100%</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="section">
+    <div class="team-preview reveal">
+        <div class="section-head" style="margin-bottom:36px;">
+            <div class="eyebrow">Built by</div>
+            <h2>The team behind RetinaScan.</h2>
+        </div>
+        <div class="team-grid reveal-stagger">
+            <div class="team-card stagger-item">
+                <div class="team-photo"><img src="{{ url_for('static', filename='team/farhan.png') }}" alt="Farhan Tanvir"></div>
+                <div class="team-name">Farhan Tanvir</div>
+                <div class="team-role">Software Engineering</div>
+            </div>
+            <div class="team-card stagger-item">
+                <div class="team-photo"><img src="{{ url_for('static', filename='team/sadia.png') }}" alt="Sadia Islam Nizum"></div>
+                <div class="team-name">Sadia Islam Nizum</div>
+                <div class="team-role">Software Engineering</div>
+            </div>
+            <div class="team-card stagger-item">
+                <div class="team-photo"><img src="{{ url_for('static', filename='team/sajib.png') }}" alt="Sajib Sarker"></div>
+                <div class="team-name">Sajib Sarker</div>
+                <div class="team-role">Software Engineering</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="section">
+    <div class="cta">
+        <div class="cta-card reveal">
+            <h2>Ready to read a retina?</h2>
+            <p>Upload a fundus photograph and get a clinical-stage result in under two seconds.</p>
+            <div class="cta-actions">
+                <a class="btn-primary" href="{{ url_for('test') }}">Start a Test</a>
+                <a class="btn-ghost" href="{{ url_for('contact') }}">Contact Us</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+<script>
+/* Hero parallax tilt */
+const eyeWrap = document.getElementById("eyeWrap");
+if (eyeWrap) {
+    document.addEventListener("mousemove", (e) => {
+        const x = (e.clientX / window.innerWidth - 0.5) * 10;
+        const y = (e.clientY / window.innerHeight - 0.5) * 10;
+        eyeWrap.style.transform = `rotateY(${x}deg) rotateX(${-y}deg)`;
+    });
+}
+
+/* Animated counters in the stats strip */
+const counters = document.querySelectorAll(".strip-inner b");
+const counterIO = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+        if (!entry.isIntersecting) return;
+        const el = entry.target;
+        const raw = el.textContent.trim();
+        const match = raw.match(/[\d.]+/);
+        if (match) {
+            const target = parseFloat(match[0]);
+            const suffix = raw.replace(match[0], "");
+            const isInt = !raw.includes(".");
+            const duration = 900;
+            const start = performance.now();
+            function tick(now) {
+                const progress = Math.min((now - start) / duration, 1);
+                const current = target * progress;
+                el.textContent = (isInt ? Math.round(current) : current.toFixed(1)) + suffix;
+                if (progress < 1) requestAnimationFrame(tick);
+            }
+            requestAnimationFrame(tick);
+        }
+        counterIO.unobserve(el);
+    });
+}, { threshold: 0.6 });
+counters.forEach(el => counterIO.observe(el));
+</script>
+{% endblock %}
